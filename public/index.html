@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="ru" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Custommm – Регистрация нового поставщика</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+      <link rel="icon" type="image/png" href="favicon.png" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="brand">
+        <div class="logo">
+          <img src="logo.png" alt="Custommm Logo" />
+        </div>
+        <div class="brand-text">
+          <p class="eyebrow">Портал регистрации поставщиков</p>
+          <h1>Регистрация нового поставщика</h1>
+          <p class="subhead">
+            Заполните данные поставщика, прикрепите договор, и система передаст заявку на регистрацию в корпоративные системы компании.
+          </p>
+        </div>
+      </header>
+
+      <form
+        id="claim-form"
+        class="card"
+        autocomplete="off"
+        data-lpignore="true"
+        data-1p-ignore="true"
+        data-form-type="other"
+        data-bwignore="true"
+      >
+        <div class="field-grid">
+          <label class="field">
+            <span>Наименование поставщика</span>
+            <input
+              type="text"
+              name="vendor_name"
+              autocomplete="off"
+              data-lpignore="true"
+              data-1p-ignore="true"
+              data-form-type="other"
+              data-bwignore="true"
+              required
+              placeholder="напр. ООО Ромашка"
+            />
+          </label>
+          <label class="field">
+            <span>ID поставщика</span>
+            <input
+              type="number"
+              name="vendor_id"
+              autocomplete="off"
+              data-lpignore="true"
+              data-1p-ignore="true"
+              data-form-type="other"
+              data-bwignore="true"
+              required
+              placeholder="напр. 123456"
+            />
+          </label>
+        </div>
+
+        <label class="field">
+          <span>Тип поставщика</span>
+          <select name="vendor_type" required>
+            <option value="" disabled selected>Выберите тип</option>
+            <option value="Big">Крупный</option>
+            <option value="Medium">Средний</option>
+            <option value="Small">Малый</option>
+          </select>
+        </label>
+
+        <div class="field">
+          <span>Договор</span>
+          <label id="drop-zone" class="drop-zone">
+            <input
+              id="claim_file"
+              name="contract"
+              type="file"
+              accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
+              required
+            />
+            <div class="drop-content">
+              <div class="drop-icon">⇣</div>
+              <div>
+                <strong>Перетащите файл сюда</strong>
+                <p>или нажмите, чтобы выбрать файл на компьютере</p>
+              </div>
+            </div>
+            <div class="file-meta">
+              <span id="file-name">Файл не выбран</span>
+              <span id="file-size">—</span>
+            </div>
+          </label>
+          <p class="hint">Допустимые форматы: PDF, JPG, PNG или Word. Максимальный размер — 4 МБ.</p>
+        </div>
+
+        <button id="submit-btn" class="submit" type="submit">
+          <span>Отправить заявку</span>
+          <span class="spinner" aria-hidden="true"></span>
+        </button>
+
+        <div id="status" class="status" role="status" aria-live="polite">
+          <span class="status-check" aria-hidden="true">
+            <svg viewBox="0 0 52 52" role="presentation">
+              <circle cx="26" cy="26" r="24" fill="none" />
+              <path d="M15 27l8 8 14-16" fill="none" />
+            </svg>
+          </span>
+          <span id="status-text"></span>
+        </div>
+      </form>
+
+      <p class="footnote">
+        Документы хранятся в защищённом виде и передаются непосредственно в отдел закупок.
+      </p>
+    </main>
+
+    <div id="success-modal" class="success-modal" aria-hidden="true">
+      <div class="success-card" role="dialog" aria-modal="true" aria-labelledby="success-title">
+        <div class="success-icon" aria-hidden="true">
+          <svg viewBox="0 0 120 120" role="presentation">
+            <circle cx="60" cy="60" r="54" fill="none" />
+            <path d="M36 64l16 16 32-36" fill="none" />
+          </svg>
+        </div>
+        <h2 id="success-title">Заявка успешно отправлена</h2>
+        <p>Мы получили данные поставщика и передаём их в отдел закупок для обработки.</p>
+        <a href="https://wonderful.app.demo.wonderful.ai/activities?tab=tasks" target="_blank" rel="noopener noreferrer" class="agent-activity-link">
+          <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.4"/><path d="M8 5v3.5l2 1.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Отследить заявку в консоли агента
+        </a>
+        <button id="success-close" class="ghost" type="button">Подать новую заявку</button>
+      </div>
+    </div>
+
+    <script type="module" src="app.js"></script>
+    <script>
+      (() => {
+        const s = document.createElement('script');
+        s.src = 'https://wonderful.app.demo.wonderful.ai/embed/wonderful-chat.js';
+        s.onload = () => {
+          new window.WonderfulChat({
+            environment: "wonderful.api.demo.wonderful.ai",
+            agentId: "a5141f52-16eb-4255-bdea-d5ca0cb1f8c6",
+
+            agentName: 'Ассистент по поставщикам',
+            buttonText: 'Чат с агентом',
+            placeholderText: 'Введите сообщение...',
+            isRTL: false,
+
+            primaryColor: '#0d1b4b',
+            accentColor: '#e8407a',
+            textColor: '#0d1b4b',
+
+            headerBgColor: '#0d1b4b',
+            headerTextColor: '#ffffff',
+
+            userBubbleColor: '#0d1b4b',
+            userTextColor: '#ffffff',
+            agentBubbleColor: '#f0f2f8',
+            agentTextColor: '#0d1b4b',
+
+            windowBgColor: '#ffffff',
+            messagesBgColor: '#ffffff',
+            inputBgColor: '#fafafa',
+
+            statusColor: '#0d1b4b',
+            errorColor: '#d32f2f',
+
+            logoUrl: 'logo.png'
+          });
+        };
+        document.head.appendChild(s);
+      })();
+    </script>
+  </body>
+</html>
